@@ -7,7 +7,7 @@ on:
         type: string
 
 env:
-  FILE: ${{ inputs.file-download-url }}
+  file: ${{ inputs.file-download-url }}
 
 jobs:
   Convert:
