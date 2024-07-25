@@ -4,15 +4,42 @@ import glob
 import json
 import base64
 import shutil
+import dotenv
+import zipfile
+import urllib.request
 from PIL import Image
 from io import BytesIO
 from utils.model import Model
 from utils.texture import Texture
 from utils.animation import Animation
 
-shutil.rmtree("output") if os.path.exists("output") else None
-os.makedirs("output")
+print("Starting convert")
+dotenv.load_dotenv()
+
+for i in ("output", "blueprints"):
+    if os.path.exists(i) and (os.getenv("file") or i == "output"):
+        shutil.rmtree(i)
+        print(i)
+    os.makedirs(i, exist_ok=True)
+
+if os.getenv("file"):
+    if os.getenv("file").startswith("http"):
+        with urllib.request.urlopen(os.getenv("file")) as res:
+            with open("blueprints/download.zip", "wb") as f:
+                f.write(res.read())
+                bpfile = "blueprints/download.zip"
+    elif os.getenv("file").endswith(".zip"):
+        bpfile = os.getenv("file")
+    else:
+        print("File not found")
+        exit(404)
+    with zipfile.ZipFile(bpfile, "r") as zf:
+        zf.extractall("blueprints/")
+    print("Loaded blueprints")
+
 for modelfile in glob.glob("blueprints/**/*.bbmodel", recursive=True):
+    print(f"Convert file: {modelfile}")
+
     with open(modelfile, "r") as f:
         data = json.load(f)
     
@@ -48,4 +75,5 @@ for modelfile in glob.glob("blueprints/**/*.bbmodel", recursive=True):
         json.dump(model, f, indent=4)
     with open(f"output/{name}/animation.{name}.json", 'w') as f:
         json.dump(animations, f, indent=4)
-    
+
+print("Convert done")
