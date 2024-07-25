@@ -54,7 +54,7 @@ class Model:
                 "pivot": Model.__get_pivot(element.get("origin", [0,0,0])),
                 "uv": self.__get_uv(element)
             }
-            return cube if element["type"].lower() == "cube" else None
+            return cube if element.get("type", "cube").lower() == "cube" else None
         elif outliner:
             group = {
                 "name": outliner["name"],
