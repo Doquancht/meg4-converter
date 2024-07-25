@@ -19,7 +19,6 @@ dotenv.load_dotenv()
 for i in ("output", "blueprints"):
     if os.path.exists(i) and (os.getenv("file") or i == "output"):
         shutil.rmtree(i)
-        print(i)
     os.makedirs(i, exist_ok=True)
 
 if os.getenv("file"):
