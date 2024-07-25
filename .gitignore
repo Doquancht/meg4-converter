@@ -1,0 +1,6 @@
+output/
+blueprints/
+
+.idx/
+.venv/
+__pycache__/
