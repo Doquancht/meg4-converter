@@ -43,7 +43,7 @@ for modelfile in glob.glob("blueprints/**/*.bbmodel", recursive=True):
         data = json.load(f)
     
     textures = {"width": 0, "height": 0, "data": {}}
-    name = os.path.splitext(os.path.basename(modelfile))[0]
+    name = os.path.splitext(modelfile)[0].replace("blueprints/", "").replace("/", "_")
     os.makedirs(f"output/{name}/")
 
     for slot, texture in enumerate(data.get("textures", [])):
