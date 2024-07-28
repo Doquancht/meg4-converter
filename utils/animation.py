@@ -36,7 +36,7 @@ class Animation:
                 "blend_weight": animation.get("blend_weight"),
                 "start_delay": animation.get("start_delay"),
                 "loop_delay": animation.get("loop_delay"),
-                "bones": Animation.__get_animator(animation["animators"])
+                "bones": Animation.__get_animator(animation.get("animators", []))
             }
         return data
             
