@@ -53,7 +53,7 @@ for modelfile in glob.glob("blueprints/**/*.bbmodel", recursive=True):
         #Remove Animtion Frame
         if texture.get("frame_time", 1)> 1:
             height = texture_image.height // texture["frame_time"]
-            texture_image.crop(0, 0, texture_image.width, height)
+            texture_image = texture_image.crop(0, 0, texture_image.width, height)
         
         textures["data"][str(slot)] = {"image": texture_image,"position": textures["height"]}
         textures["width"] = max(textures["width"], texture_image.width)
@@ -68,7 +68,7 @@ for modelfile in glob.glob("blueprints/**/*.bbmodel", recursive=True):
         model_texture.save(f"output/{name}/{name}.png")
 
     texture = Texture(model_texture, textures) if data.get("textures", None) else None
-    animations = Animation(data["animations"]).to_bedrock()
+    animations = Animation(data.get("animations", [])).to_bedrock()
     model = Model(data, texture).to_geometry_bedrock()
     with open(f"output/{name}/{name}.json", "w") as f:
         json.dump(model, f, indent=4)
